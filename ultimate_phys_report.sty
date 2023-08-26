@@ -121,3 +121,10 @@
 % 表紙と目次が終わった後の本文開始でページ番号を1とする
 \setcounter{page}{1}
 }
+
+% ページ番号を右下にする
+\usepackage{fancyhdr}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[RE,RO]{\thepage}
