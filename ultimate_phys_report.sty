@@ -1,0 +1,123 @@
+
+% 物理学のレポートを一瞬で終わらせる最強のインクルード用texスタイルファイル
+
+% © 2023 ヤバめのたて
+
+% LuaLaTeX でこのファイルをインクリードして、
+
+% \ultimatephysreport{物理学実験,2}{2023,1}{2023,8,25}{曇り,10,1234,99}{ヤバい実験}{22X1-001,山田 太郎}{ﾁｬﾙﾒﾗ次郎,ラーメン,}{1}
+
+% と記述することで、実験レポートの表紙と目次が生成できます！
+
+% \ultimatephysreport{授業名,授業名最後の番号}{年度,授業の回数}{日付年,日付月,日付日}{天気,気温,気圧,湿度}{実験テーマ}{学籍番号,名前}{共同実験者1,共同実験者2,共同実験者3}{目次の出力の有無（出力する場合は1）}
+
+
+% Word の「やや狭い」余白
+\usepackage[
+    % 上下余白 25.4 mm 、左右余白 19.05 mm
+    margin=25.4truemm, left=19.05truemm, right=19.05truemm,
+    % ヘッダーとフッターの位置調整
+    headsep=7truemm, footskip=5truemm]{geometry}
+
+% フォントを変えるために必要
+\usepackage{luatexja-fontspec}
+
+% 以下表紙のパーツを出力するコマンド
+\NewDocumentCommand{\ultimatephysreportauxa}{mm}{#1年度　第\makebox[2.5\zw][c]{#2}回}
+\NewDocumentCommand{\ultimatephysreportauxb}{mm}{#1\makebox[1.15\zw][l]{#2}レポート}
+\NewDocumentCommand{\ultimatephysreportauxc}{mm}{学籍番号\makebox[0.65\zw][l]{：} \underline{\makebox[8.5\zw][c]{#1}}
+
+    氏名\makebox[0.65\zw][l]{：} \underline{\makebox[8.5\zw][c]{#2}}}
+\NewDocumentCommand{\ultimatephysreportauxd}{mmm}{共同実験者\makebox[0.65\zw][l]{：} \underline{\makebox[8.5\zw][c]{#1}}
+
+    \underline{\makebox[8.5\zw][c]{#2}}
+
+    \underline{\makebox[8.5\zw][c]{#3}}}
+\NewDocumentCommand{\ultimatephysreportauxe}{mmm}{実験日\makebox[0.65\zw][l]{：} \underline{\makebox[4\zw][c]{#1}/%
+        \makebox[3\zw][c]{#2}/\makebox[3\zw][c]{#3}}}
+\NewDocumentCommand{\ultimatephysreportauxf}{mmmm}{#1
+
+    気温\makebox[0.65\zw][l]{：}\makebox[3.0\zw][c]{#2} ℃　　%
+    気圧\makebox[0.65\zw][l]{：}\makebox[4.0\zw][c]{#3} hPa　　%
+    湿度\makebox[0.65\zw][l]{：}\makebox[3.0\zw][c]{#4} \%}
+
+% 表紙の出力
+\NewDocumentCommand{\ultimatephysreport}
+{>{\SplitArgument{1}{,}}m>{\SplitArgument{1}{,}}m>{\SplitArgument{2}{,}}m>{\SplitArgument{3}{,}}mm>{\SplitArgument{1}{,}}m>{\SplitArgument{2}{,}}mm}
+{
+
+\thispagestyle{empty}
+
+\newgeometry{
+    % 上下余白 25.4 mm 、左右余白 19.05 mm
+    top=31.5truemm, bottom=25.4truemm, left=19.05truemm, right=19.05truemm,
+    % ヘッダーとフッターの位置調整
+    headsep=15.1truemm, footskip=5truemm
+}
+
+\begin{Large}
+    \setmainfont[AutoFakeBold=2.8]{UDDigiKyokashoNK-R} [BoldFont=UDDigiKyokashoNK-R]
+    \jfontspec[AutoFakeBold=2.8]{UDDigiKyokashoNK-R} [BoldFont=UDDigiKyokashoNK-R]
+
+    \begin{center}
+        \fontsize{22truebp}{48bp}
+        %\setlength{\parskip}{18pt}
+        \selectfont
+        \bfseries
+
+        理工学部総合理工学科物理学系
+
+        \ultimatephysreportauxa#2　\ultimatephysreportauxb#1
+
+    \end{center}
+
+    \vspace{20.7truemm}
+
+    \begin{flushright}
+        \fontsize{18truebp}{36bp}
+        \selectfont
+
+        テーマ名\makebox[0.65\zw][l]{：} \underline{　　\makebox[19.4\zw][l]{#5}}
+
+        \vspace{1.0\baselineskip}
+
+        \ultimatephysreportauxc#6
+
+        \ultimatephysreportauxd#7
+
+        \vspace{3.0\baselineskip}
+
+    \end{flushright}
+
+    \begin{flushleft}
+        \fontsize{18truebp}{36bp}
+        \selectfont
+
+        \ultimatephysreportauxe#3　天気：　\ultimatephysreportauxf#4
+    \end{flushleft}
+
+\end{Large}
+
+\restoregeometry
+
+\ifnum #8=1
+
+    \thispagestyle{empty}
+    % 目次の出力 : \tableofcontents だと見出しと中身で違う書式設定が出来ない
+
+    \section*{目次}
+     {
+
+      \setlength{\baselineskip}{3em}
+      \makeatletter % 内部コマンドを使うための宣言
+      \@starttoc{toc} % 中身を出力
+      \makeatother % 内部コマンドの終了宣言
+
+      \newpage
+     }
+
+\fi
+
+% 表紙と目次が終わった後の本文開始でページ番号を1とする
+\setcounter{page}{1}
+}
