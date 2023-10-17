@@ -15,9 +15,9 @@
 % Word の「やや狭い」余白
 \usepackage[
     % 上下余白 25.4 mm 、左右余白 19.05 mm
-    margin=25.4truemm, left=19.05truemm, right=19.05truemm,
+    margin=19.05truemm, top=25.4truemm, bottom=30.4truemm,
     % ヘッダーとフッターの位置調整
-    headsep=7truemm, footskip=5truemm]{geometry}
+    headsep=7truemm, footskip=10truemm]{geometry}
 
 % フォントを変えるために必要
 \usepackage{luatexja-fontspec}
@@ -47,13 +47,6 @@
 {
 
 \thispagestyle{empty}
-
-\newgeometry{
-    % 上下余白 25.4 mm 、左右余白 19.05 mm
-    top=31.5truemm, bottom=25.4truemm, left=19.05truemm, right=19.05truemm,
-    % ヘッダーとフッターの位置調整
-    headsep=15.1truemm, footskip=5truemm
-}
 
 \begin{Large}
     \setmainfont[AutoFakeBold=2.8]{UDDigiKyokashoNK-R} [BoldFont=UDDigiKyokashoNK-R]
@@ -127,4 +120,20 @@
 \renewcommand{\headrulewidth}{0pt}
 \pagestyle{fancy}
 \fancyhf{}
-\fancyfoot[RE,RO]{\thepage}
+\fancyfoot[R]{\thepage}
+
+\ifdefined\chapter
+  % chapterコマンドを再定義する
+  \let\oldchapter\chapter % 元のchapterコマンドを保存する
+  \renewcommand{\chapter}{
+    \oldchapter % 元のchapterコマンドを実行する
+    \thispagestyle{fancy} % 現在のページのページスタイルをfancyに変更する
+  }
+\fi
+\ifdefined\maketitle
+  \let\oldmaketitle\maketitle
+  \renewcommand{\maketitle}{
+    \oldmaketitle
+    \thispagestyle{fancy}
+  }
+\fi
